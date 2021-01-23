@@ -23,23 +23,33 @@ use App\Http\Controllers\DashboardController;
 # Home root
 Route::get('/', function () {
     return view('home');
-});
+})->middleware('auth');
 
 # Auth Controller
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
 
-Route::group(['middleware' => 'auth'], function() {
+# Route Group Admin
+Route::group(['middleware' => ['auth', 'checkRole:admin']], function() {
 
     # Dashboard Controller
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
     # Siswa Controller
     Route::get('/siswa', [SiswaController::class, 'index']);
+    Route::get('/siswa/profile/{id}', [SiswaController::class, 'show']);
     Route::get('/siswa/edit/{id}', [SiswaController::class, 'edit']);
     Route::post('/siswa/create', [SiswaController::class, 'create']);
     Route::put('/siswa/{id}', [SiswaController::class, 'update']);
     Route::delete('/siswa/{id}', [SiswaController::class, 'destroy']);
+
+});
+
+# Route Group Siswa
+Route::group(['middleware' => ['auth', 'checkRole:admin,siswa']], function() {
+
+    # Dashboard Controller
+    Route::get('/dashboard', [DashBoardController::class, 'index']);
 
 });

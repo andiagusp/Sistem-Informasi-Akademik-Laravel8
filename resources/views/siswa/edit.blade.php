@@ -13,7 +13,7 @@
                         </div>
                         {{-- panel body --}}
                         <div class="panel-body">
-                            <form action="/siswa/{{ $siswa->id_siswa }}" method="post">
+                            <form action="/siswa/{{ $siswa->id_siswa }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                     
@@ -45,10 +45,15 @@
                                 </div>
                     
                                 <div class="form-group">
+                                    <label for="avatar">Avatar</label>
+                                    <input type="file" name="avatar" class="form-control">
+                                </div>
+                                
+                                <div class="form-group">
                                     <a href="/siswa" class="btn btn-warning">Kembali</a>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
-                    
+                                
                             </form>
                         </div>
                     </div>

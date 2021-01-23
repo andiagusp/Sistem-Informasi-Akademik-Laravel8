@@ -34,8 +34,8 @@
                             </tr>
                             @foreach ($siswa as $s)
                             <tr>
-                                <td>{{ $s->nama_depan }}</td>
-                                <td>{{ $s->nama_belakang }}</td>
+                                <td><a href="/siswa/profile/{{ $s->id_siswa }}">{{ $s->nama_depan }}</a></td>
+                                <td><a href="/siswa/profile/{{ $s->id_siswa }}">{{ $s->nama_belakang }}</a></td>
                                 <td>{{ $s->jenis_kelamin }}</td>
                                 <td>{{ $s->agama }}</td>
                                 <td>{{ $s->alamat }}</td>
@@ -76,11 +76,15 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nama_depan">Nama Depan</label>
-                        <input type="text" name="nama_depan" placeholder="Isi Nama Depan" class="form-control">
+                        <input type="text" name="nama_depan" placeholder="Isi Nama Depan" class="form-control" autofocus>
                     </div>
                     <div class="form-group">
                         <label for="nama_belakang">Nama Belakang</label>
                         <input type="text" name="nama_belakang" placeholder="Isi Nama Belakang" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" placeholder="Email ..." class="form-control">
                     </div>
                     <div class="form-group">
                         <select name="jenis_kelamin" class="form-control">

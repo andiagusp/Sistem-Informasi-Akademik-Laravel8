@@ -38,7 +38,7 @@
                                 @method('post')
 								<div class="form-group">
 									<label for="signin-email" class="control-label sr-only">Email</label>
-									<input type="email" class="form-control" name="email" placeholder="Email">
+									<input type="email" class="form-control" name="email" placeholder="Email" autofocus>
 								</div>
 								<div class="form-group">
 									<label for="signin-password" class="control-label sr-only">Password</label>
