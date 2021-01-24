@@ -76,29 +76,30 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nama_depan">Nama Depan</label>
-                        <input type="text" name="nama_depan" placeholder="Isi Nama Depan" class="form-control" autofocus>
+                        <input type="text" name="nama_depan" id="nama_depan" placeholder="Isi Nama Depan" class="form-control" value="{{ old('nama_depan') }}">
+                        @error('nama_depan') <div class="alert alert-danger">{{ $message }}</div> @enderror
                     </div>
                     <div class="form-group">
                         <label for="nama_belakang">Nama Belakang</label>
-                        <input type="text" name="nama_belakang" placeholder="Isi Nama Belakang" class="form-control">
+                        <input type="text" name="nama_belakang" id="nama_belakang" placeholder="Isi Nama Belakang" class="form-control" value="{{ old('nama_belakang') }}">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" placeholder="Email ..." class="form-control">
+                        <label for="email">Email</label> 
+                        <input type="email" name="email" id="email" placeholder="Email ..." class="form-control">
                     </div>
                     <div class="form-group">
-                        <select name="jenis_kelamin" class="form-control">
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                             <option value="L">Laki - Laki</option>
                             <option value="P">Perempuan</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="agama">Agama</label>
-                        <input type="text" class="form-control" name="agama" placeholder="Isi Agama">
+                        <input type="text" class="form-control" name="agama" id="agama" placeholder="Isi Agama">
                     </div>
                     <div class="form-group">
-                        <label for="agama">Agama</label>
-                        <textarea name="alamat" class="form-control"></textarea>
+                        <label for="alamat">Alamat</label>
+                        <textarea name="alamat" id="alamat" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

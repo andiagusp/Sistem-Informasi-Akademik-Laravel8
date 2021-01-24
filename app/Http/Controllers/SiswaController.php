@@ -32,6 +32,12 @@ class SiswaController extends Controller
          * Create siswa menggunakan eloquent
          * sekaligus membuat user akun login
          */
+
+        # validate form create
+        $request->validate([
+            'nama_depan' => 'required',
+            'nama_belakang' => 'required'
+        ]);
         
         # insert data user role default: siswa
         $user = new User;
