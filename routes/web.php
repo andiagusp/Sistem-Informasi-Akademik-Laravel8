@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function() {
     Route::post('/siswa/create', [SiswaController::class, 'create']);
     Route::put('/siswa/{id}', [SiswaController::class, 'update']);
     Route::delete('/siswa/{id}', [SiswaController::class, 'destroy']);
+    Route::post('/siswa/tambahnilai/{id}', [SiswaController::class, 'tambahNilai']);
 
 });
 

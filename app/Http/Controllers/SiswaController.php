@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use App\Models\Siswa;
 use App\Models\User;
+use App\Models\Mapel;
 
 class SiswaController extends Controller
 {
@@ -35,8 +36,13 @@ class SiswaController extends Controller
 
         # validate form create
         $request->validate([
-            'nama_depan' => 'required',
-            'nama_belakang' => 'required'
+            'nama_depan' => 'required|alpha',
+            'nama_belakang' => 'required|alpha',
+            'email' => 'required|email|unique:users,email',
+            'agama' => 'required|alpha',
+            'jenis_kelamin' => 'required',
+            'alamat' => 'required',
+            'avatar' => 'mimes:jpg,jpeg,png'
         ]);
         
         # insert data user role default: siswa
@@ -51,6 +57,14 @@ class SiswaController extends Controller
         # insert data siswa
         $request->request->add(['id_user' => $user->id]);
         $siswa = Siswa::create($request->all());
+
+        # pengecekan avatar
+        if($request->hasFile('avatar'))
+        {
+            $request->file('avatar')->move('images/', $request->file('avatar')->getClientOriginalName());
+            $siswa->avatar = $request->file('avatar')->getClientOriginalName();
+            $siswa->save();
+        }
         
         return redirect('/siswa')->with('message', 'Data berhasil ditambahkan');
     }
@@ -69,7 +83,7 @@ class SiswaController extends Controller
     {
         /**
          * Find siswa berdasarkan id
-         */
+        **/
         $siswa = Siswa::find($id);
         
         /**
@@ -88,11 +102,42 @@ class SiswaController extends Controller
         return redirect('/siswa')->with('message', 'Data berhasil diupdate');
     }
 
+    public function tambahNilai(Request $request, $idSiswa)
+    {
+        /**
+         * tambah nilai siswa berdasarkan id
+        **/
+        
+        # find siswa id
+        $siswa = Siswa::find($idSiswa);
+
+        # validate form nilai
+        $request->validate([
+            'nilai' => 'required|numeric',
+            'pelajaran' => 'required'
+        ]);
+
+        # cek mata pelajaran apakah sudah ada didb atau belum
+        if($siswa->mapel()->where('mapel_siswa.id_mapel', $request->pelajaran)->exists())
+        {
+            return redirect("/siswa/profile/{$idSiswa}")->with('fail', 'Data matapelajaran sudah ada');
+        }
+
+        # insert into pivot table mapel_siswa
+        $siswa->mapel()->attach($request->pelajaran, ['nilai' => $request->nilai]);
+
+        return redirect("/siswa/profile/{$idSiswa}")->with('message', 'Nilai berhasil ditambah');
+    }
+
     public function show($id)
     {
+        # find siswa id
         $siswa = Siswa::find($id);
+
+        # get mata pelajaran
+        $matapelajaran = Mapel::all();
         
-        return view('siswa.profile', compact('siswa'));
+        return view('siswa.profile', compact('siswa', 'matapelajaran'));
     }
 
     public function destroy($id)

@@ -27,6 +27,6 @@ class Siswa extends Model
     #pivot tabel relation many to many
     public function mapel()
     {
-        return $this->belongsToMany(Mapel::class, 'mapel_siswa', 'id_siswa', 'id_mapel')->withPivot('nilai');
+        return $this->belongsToMany(Mapel::class, 'mapel_siswa', 'id_siswa', 'id_mapel')->withPivot('nilai')->withTimestamps();
     }
 }
