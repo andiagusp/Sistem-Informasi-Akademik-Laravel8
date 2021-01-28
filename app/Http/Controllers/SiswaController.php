@@ -136,8 +136,22 @@ class SiswaController extends Controller
 
         # get mata pelajaran
         $matapelajaran = Mapel::all();
+
+        # menyiapkan data untuk chart
+        $categories = [];
+        $data = [];
+
+        foreach($matapelajaran as $mapel)
+        {     
+            if($siswa->mapel()->wherePivot('id_mapel', $mapel->id_mapel)->first())
+            {
+                $categories[] = $mapel->nama;
+                $data[] = $siswa->mapel()->wherePivot('id_mapel', $mapel->id_mapel)->first()->pivot->nilai;
         
-        return view('siswa.profile', compact('siswa', 'matapelajaran'));
+            }
+        }
+        
+        return view('siswa.profile', compact('siswa', 'matapelajaran', 'categories', 'data'));
     }
 
     public function destroy($id)
