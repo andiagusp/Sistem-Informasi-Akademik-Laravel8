@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function() {
     Route::put('/siswa/{id}', [SiswaController::class, 'update']);
     Route::delete('/siswa/{id}', [SiswaController::class, 'destroy']);
     Route::post('/siswa/tambahnilai/{id}', [SiswaController::class, 'tambahNilai']);
+    Route::delete('/siswa/deletenilai/{id}/{idmapel}', [SiswaController::class, 'deleteNilai']);
 
 });
 

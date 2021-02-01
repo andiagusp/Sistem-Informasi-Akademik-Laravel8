@@ -1,5 +1,9 @@
 @extends('layout.master')
-    
+
+@section('editable')
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap3-editable/css/bootstrap-editable.css') }}">
+@endsection
+
 @section('content')
     <div class="main">
         <div class="main-content">
@@ -77,13 +81,25 @@
                                             <th>Nama</th>
                                             <th>Semester</th>
                                             <th>Nilai</th>
+                                            <th>Action</th>
                                         </tr>
                                         @foreach ($siswa->mapel as $mapel)
                                             <tr>
                                                 <td>{{ $mapel->kode }}</td>
                                                 <td>{{ $mapel->nama }}</td>
                                                 <td>{{ $mapel->semester }}</td>
-                                                <td>{{ $mapel->pivot->nilai }}</td>
+                                                <td>
+                                                    <a href="#" class="nilai-update" data-type="text" data-pk="{{ $mapel->id_mapel }}" data-url="/api/siswa/editnilai/{{ $siswa->id_siswa }}" data-title="Edit Nilai Siswa">
+                                                        {{ $mapel->pivot->nilai }}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <form action="/siswa/deletenilai/{{ $siswa->id_siswa }}/{{ $mapel->id_mapel }}" method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('yakin ingin hapus nilai {{ $siswa->nama_depan }}')" type="submit">Delete</button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </table>
@@ -146,44 +162,54 @@
 
 @section('chart')
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script>
-    Highcharts.chart('chart-nilai', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Laporan Nilai Siswa'
-        },
-        xAxis: {
-            categories: {!! json_encode($categories) !!},
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
+    <script src="{{ asset('vendor/bootstrap3-editable/js/bootstrap-editable.min.js') }}"></script>
+    <script src="{{ asset('js/highcharts.js') }}"></script>
+    <script>
+
+        Highcharts.chart('chart-nilai', {
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Rainfall (mm)'
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Nilai',
-            data: {!! json_encode($data) !!}
-        }]
-    });
-</script>
+                text: 'Laporan Nilai Siswa'
+            },
+            xAxis: {
+                categories: {!! json_encode($categories) !!},
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Nilai',
+                data: {!! json_encode($data) !!}
+            }]
+        });
+    
+        $(document).ready(function() {
+
+            $('.nilai-update').editable();
+        
+        });
+
+    </script>
+
     
 @endsection

@@ -167,6 +167,14 @@ class SiswaController extends Controller
         return redirect('/siswa')->with('message', 'Data berhasil dihapus');
     }
 
+    public function deleteNilai($siswaID, $mapelID)
+    {
+        $siswa = Siswa::find($siswaID);
+        $siswa->mapel()->detach($mapelID);
+
+        return redirect()->back()->with('fail', 'Data berhasil dihapus');
+    }
+
     public function search($name)
     {
         # cari data siswa dengan nama depan
@@ -174,4 +182,5 @@ class SiswaController extends Controller
         
         return $siswa;
     }
+    
 }
