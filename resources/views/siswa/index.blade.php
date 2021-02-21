@@ -7,11 +7,11 @@
             <div class="row">
                 <div class="panel">
                     <div class="panel-heading">
-                        <div class="col-md-6">
-                            <h1 class="panel-title">Data Siswa</h1>
-                        </div>
-                        <div class="col-md-6">
-                            <button type="button" class="btn right" href="#" data-toggle="modal" data-target="#exampleModal"><i class="lnr lnr-plus-circle"></i></button>
+                        <h1 class="panel-title">Data Siswa</h1>
+                        <div class="right">
+                            <a href="/siswa/exportexcel" class="btn btn-success btn-sm">Export Excel</a>
+                            <a href="/siswa/exportpdf" class="btn btn-warning btn-sm">Export PDF</a>
+                            <button type="button" class="btn" href="#" data-toggle="modal" data-target="#exampleModal"><i class="lnr lnr-plus-circle"></i></button>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -30,6 +30,7 @@
                                 <th>Jenis Kelamin</th>
                                 <th>Agama</th>
                                 <th>Alamat</th>
+                                <th>Nilai Rata-Rata</th>
                                 <th>Action</th>
                             </tr>
                             @foreach ($siswa as $s)
@@ -39,6 +40,7 @@
                                 <td>{{ $s->jenis_kelamin }}</td>
                                 <td>{{ $s->agama }}</td>
                                 <td>{{ $s->alamat }}</td>
+                                <td>{{ $s->average() }}</td>
                                 <td>
                                     <form action="/siswa/{{ $s->id_siswa }}" method="post">
                                         <a href="/siswa/edit/{{ $s->id_siswa }}" class="btn btn-warning text-light">Edit</a>

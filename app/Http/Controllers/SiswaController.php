@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+
 use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Mapel;
+use App\Models\Guru;
+
+use App\Exports\SiswaExport;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class SiswaController extends Controller
 {
@@ -169,6 +175,8 @@ class SiswaController extends Controller
 
     public function deleteNilai($siswaID, $mapelID)
     {
+        #delete nilai dari pivot table
+        
         $siswa = Siswa::find($siswaID);
         $siswa->mapel()->detach($mapelID);
 
@@ -181,6 +189,18 @@ class SiswaController extends Controller
         $siswa = Siswa::where("nama_depan", "LIKE", "%{$name}%")->get();
         
         return $siswa;
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new SiswaExport, 'Siswa.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $siswa = Siswa::all();
+        $pdf = PDF::loadView('export.siswapdf', compact('siswa'));
+        return $pdf->download('siswa.pdf');
     }
     
 }

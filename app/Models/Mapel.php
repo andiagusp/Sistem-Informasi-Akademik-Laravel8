@@ -19,4 +19,9 @@ class Mapel extends Model
         return $this->belongsToMany(Siswa::class, 'mapel_siswa', 'id_mapel', 'id_siswa')->withPivot('nilai')->withTimeStamps();
     }
 
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'id_mapel', 'id_guru');
+    }
+
 }

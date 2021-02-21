@@ -46,6 +46,13 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function() {
     Route::post('/siswa/tambahnilai/{id}', [SiswaController::class, 'tambahNilai']);
     Route::delete('/siswa/deletenilai/{id}/{idmapel}', [SiswaController::class, 'deleteNilai']);
 
+    #excel export
+    Route::get('/siswa/exportexcel', [SiswaController::class, 'exportExcel']);
+
+
+    #PDF export
+    Route::get('/siswa/exportpdf', [SiswaController::class, 'exportPDF']);
+
 });
 
 # Route Group Siswa
