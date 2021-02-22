@@ -75,22 +75,21 @@ class SiswaController extends Controller
         return redirect('/siswa')->with('message', 'Data berhasil ditambahkan');
     }
 
-    public function edit($id)
+    /**
+     * Find siswa berdasarkan id
+     * Model Binding
+     */
+    public function edit(Siswa $siswa)
     {
-        /**
-         * Find siswa berdasarkan id
-         */
-        $siswa = Siswa::find($id);
-
         return view('siswa.edit', compact('siswa'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Find siswa berdasarkan id
+     * Model Binding
+     */
+    public function update(Request $request, Siswa $siswa)
     {
-        /**
-         * Find siswa berdasarkan id
-        **/
-        $siswa = Siswa::find($id);
         
         /**
          * Update siswa dengan eloquent
@@ -108,14 +107,11 @@ class SiswaController extends Controller
         return redirect('/siswa')->with('message', 'Data berhasil diupdate');
     }
 
-    public function tambahNilai(Request $request, $idSiswa)
+    public function tambahNilai(Request $request, Siswa $siswa)
     {
         /**
          * tambah nilai siswa berdasarkan id
-        **/
-        
-        # find siswa id
-        $siswa = Siswa::find($idSiswa);
+         */
 
         # validate form nilai
         $request->validate([
@@ -126,20 +122,17 @@ class SiswaController extends Controller
         # cek mata pelajaran apakah sudah ada didb atau belum
         if($siswa->mapel()->where('mapel_siswa.id_mapel', $request->pelajaran)->exists())
         {
-            return redirect("/siswa/profile/{$idSiswa}")->with('fail', 'Data matapelajaran sudah ada');
+            return redirect("/siswa/profile/{$siswa->id_siswa}")->with('fail', 'Data matapelajaran sudah ada');
         }
 
         # insert into pivot table mapel_siswa
         $siswa->mapel()->attach($request->pelajaran, ['nilai' => $request->nilai]);
 
-        return redirect("/siswa/profile/{$idSiswa}")->with('message', 'Nilai berhasil ditambah');
+        return redirect("/siswa/profile/{$siswa->id_siswa}")->with('message', 'Nilai berhasil ditambah');
     }
 
-    public function show($id)
+    public function show(Siswa $siswa)
     {
-        # find siswa id
-        $siswa = Siswa::find($id);
-
         # get mata pelajaran
         $matapelajaran = Mapel::all();
 
@@ -160,24 +153,21 @@ class SiswaController extends Controller
         return view('siswa.profile', compact('siswa', 'matapelajaran', 'categories', 'data'));
     }
 
-    public function destroy($id)
+    /**
+     * Find siswa berdasarkan id
+     * Model Binding
+     */
+    public function destroy(Siswa $siswa)
     {
-        /**
-         * Find siswa berdasarkan id
-         */
-        $siswa = Siswa::find($id);
-
         // delete siswa
         $siswa->delete();
 
         return redirect('/siswa')->with('message', 'Data berhasil dihapus');
     }
 
-    public function deleteNilai($siswaID, $mapelID)
+    public function deleteNilai(Siswa $siswa, $mapelID)
     {
         #delete nilai dari pivot table
-        
-        $siswa = Siswa::find($siswaID);
         $siswa->mapel()->detach($mapelID);
 
         return redirect()->back()->with('fail', 'Data berhasil dihapus');

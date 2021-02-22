@@ -42,12 +42,8 @@
                                 <td>{{ $s->alamat }}</td>
                                 <td>{{ $s->average() }}</td>
                                 <td>
-                                    <form action="/siswa/{{ $s->id_siswa }}" method="post">
-                                        <a href="/siswa/edit/{{ $s->id_siswa }}" class="btn btn-warning text-light">Edit</a>
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" onclick="return confirm('Hapus data siswa {{ $s->nama_depan }}')" class="btn btn-danger">Delete</button>
-                                    </form>
+                                    <a href="/siswa/edit/{{ $s->id_siswa }}" class="btn btn-warning text-light">Edit</a>
+                                    <a href="#" siswa-id="{{ $s->id_siswa }}" class="btn btn-danger delete-siswa">Delete</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -123,4 +119,32 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('sweetAlert')
+<script>
+    $('.delete-siswa').on('click', function(event) {
+        event.preventDefault();
+
+        const id = $(this).attr('siswa-id');
+        const token = $(this).attr('data-token');
+
+        swal({
+            title: "Delete Data",
+            text: "Yakin ingin delete data ini ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+        })
+        .then((willDelete) => {
+            console.log(willDelete);
+            if(willDelete) {
+                window.location = `/siswa/delete/${id}`;
+            } else {
+                swal("data gagal didelete");
+            }
+        });
+            
+    });
+</script>
 @endsection

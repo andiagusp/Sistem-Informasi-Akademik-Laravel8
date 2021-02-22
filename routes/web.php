@@ -38,13 +38,13 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function() {
 
     # Siswa Controller
     Route::get('/siswa', [SiswaController::class, 'index']);
-    Route::get('/siswa/profile/{id}', [SiswaController::class, 'show']);
-    Route::get('/siswa/edit/{id}', [SiswaController::class, 'edit']);
+    Route::get('/siswa/profile/{siswa}', [SiswaController::class, 'show']);
+    Route::get('/siswa/edit/{siswa}', [SiswaController::class, 'edit']);
     Route::post('/siswa/create', [SiswaController::class, 'create']);
-    Route::put('/siswa/{id}', [SiswaController::class, 'update']);
-    Route::delete('/siswa/{id}', [SiswaController::class, 'destroy']);
-    Route::post('/siswa/tambahnilai/{id}', [SiswaController::class, 'tambahNilai']);
-    Route::delete('/siswa/deletenilai/{id}/{idmapel}', [SiswaController::class, 'deleteNilai']);
+    Route::put('/siswa/{siswa}', [SiswaController::class, 'update']);
+    Route::get('/siswa/delete/{siswa}', [SiswaController::class, 'destroy']);
+    Route::post('/siswa/tambahnilai/{siswa}', [SiswaController::class, 'tambahNilai']);
+    Route::delete('/siswa/deletenilai/{siswa}/{idmapel}', [SiswaController::class, 'deleteNilai']);
 
     #excel export
     Route::get('/siswa/exportexcel', [SiswaController::class, 'exportExcel']);
