@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,11 @@ use App\Http\Controllers\DashboardController;
 // });
 
 # Home root
-Route::get('/', function () {
-    return view('home');
-})->middleware('auth');
+// Route::get('/', function () {
+//     return view('home');
+// })->middleware('auth');
+
+Route::get('/', [SiteController::class, 'home']);
 
 # Auth Controller
 Route::get('/login', [AuthController::class, 'login'])->name('login');
